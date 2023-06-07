@@ -20,40 +20,176 @@
     <style>
         * {
             font-family: "Gowun Batang", serif;
+            /* color: white; */
+        }
+
+        .mypic {
+            width: 100%;
+            height: 200px;
+
+            background-image: linear-gradient(0deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0.5)),
+            url("{{url_for('static', filename='top_image.jpg')}}");
+            background-position: center;
+            background-size: cover;
+
             color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic>h1 {
+            font-size: 30px;
+        }
+
+        .mybox {
+            width: 95%;
+            max-width: 1100px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightblue;
+            margin: 20px auto;
+            color: black;
+        }
+
+        .mybox-content {
+            height: 400px;
+        }
+
+        .mybox-content>div {
+            float: right;
+            height: 350px;
+            margin-top: 20px;
+        }
+
+        .mycomment {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
         }
     </style>
 
-<script>
-    $(document).ready(function () {
-    });
-    function set_temp() {
-        fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
-            $('#temp').text(data['temp'])
+    <script>
+        $(document).ready(function () {
         });
-    }
-    function save_comment() {
-        let formData = new FormData();
-        let name = $("#name").val()
-        formData.append("name_give", name)
+        function set_temp() {
+            fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
+                $('#temp').text(data['temp'])
+            });
+        }
+        function save_comment() {
+            let formData = new FormData();
+            let name = $("#name").val()
+            formData.append("name_give", name)
 
-        fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
-            alert(data["msg"])
-            window.location.reload()
-        });
-    }
-    function show_comment() {
-        fetch('/guestbook').then((res) => res.json()).then((data) => {
-            let rows = data['result']
-        })
-    }
-</script>
+            fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
+                alert(data["msg"])
+                window.location.reload()
+            });
+        }
+        function show_comment() {
+            fetch('/guestbook').then((res) => res.json()).then((data) => {
+                let rows = data['result']
+            })
+        }
+    </script>
 
 
 
 </head>
 
 <body>
+    <div class="mypic">
+        <h1>Today's music</h1>
+    </div>
+
+    <div class="mybox">
+        <div class="d-flex flex-row bd-highlight mb-3">
+            <div class="p-2 bd-highlight">selected-region</div>
+            <div class="p-2 bd-highlight">emoticon</div>
+            <div class="p-2 bd-highlight">live-temp</div>
+        </div>
+        <div>
+            <h4>제목 출력 부분</h4>
+        </div>
+    </div>
+
+    <div class="mybox">
+        <div class="mybox-content">
+            <div class="card" style="width: 40%;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <p class="card-text">앨범 설명.</p>
+                </div>
+            </div>
+            <div style="width: 60%;">
+                <h4>내용 출력 부분</h4>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="mybox">
+        <table class="mycomment">
+            <div class="input-group mb-3">
+                <input class="form-control" style="width: 65%;" type="text" placeholder="내용을 입력하세요." />
+                <label class="input-group-text" for="inputGroupSelect01">별점</label>
+                <select class="form-select" id="star">
+                    <option selected>-- 선택하기 --</option>
+                    <option value="1">⭐</option>
+                    <option value="2">⭐⭐</option>
+                    <option value="3">⭐⭐⭐</option>
+                    <option value="4">⭐⭐⭐⭐</option>
+                    <option value="5">⭐⭐⭐⭐⭐</option>
+                </select>
+                <button type="button" class="btn btn-outline-primary">등록</button>
+            </div>
+        </table>
+    </div>
+    <div class="mybox">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 10%;">#</th>
+                    <th scope="col" style="width: 70%;">댓글</th>
+                    <th scope="col" style="width: 20%;">별점</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>댓글 내용</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>댓글 내용</td>
+                    <td>⭐⭐⭐⭐⭐</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
 </body>
 
