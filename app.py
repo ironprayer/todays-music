@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import certifi
-app = Flask(__name__)
+app = Flask(__name__, static_folder="templates/static")
 
 client = MongoClient('mongodb+srv://sparta:test@cluster0.p5xkuy6.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
 db = client.dbsparta
