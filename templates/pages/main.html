@@ -15,45 +15,177 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <title>Document</title>
 
     <style>
         * {
             font-family: "Gowun Batang", serif;
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+
+            background-image: linear-gradient(0deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0.5)),
+            url("{{url_for('static', filename='top_image.jpg')}}");
+            background-position: center;
+            background-size: cover;
+
             color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mybox {
+            width: 95%;
+            max-width: 1100px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightblue;
+            margin: 20px auto;
+        }
+
+        .mybucket {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mycard {
+            margin: 0px;
+        }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 
-<script>
-    $(document).ready(function () {
-    });
-    function set_temp() {
-        fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
-            $('#temp').text(data['temp'])
+    <script>
+        $(document).ready(function () {
         });
-    }
-    function save_comment() {
-        let formData = new FormData();
-        let name = $("#name").val()
-        formData.append("name_give", name)
+        function set_temp() {
+            fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
+                $('#temp').text(data['temp'])
+            });
+        }
+        function save_comment() {
+            let formData = new FormData();
+            let name = $("#name").val()
+            formData.append("name_give", name)
 
-        fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
-            alert(data["msg"])
-            window.location.reload()
-        });
-    }
-    function show_comment() {
-        fetch('/guestbook').then((res) => res.json()).then((data) => {
-            let rows = data['result']
-        })
-    }
-</script>
+            fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
+                alert(data["msg"])
+                window.location.reload()
+            });
+        }
+        function show_comment() {
+            fetch('/guestbook').then((res) => res.json()).then((data) => {
+                let rows = data['result']
+            })
+        }
+    </script>
 
 
 
 </head>
 
 <body>
+    <div class="banner">
+        <h1>Today's Music</h1>
+    </div>
+    <div class="mybox">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">전 체</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">서 울</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">경 기(수원)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">강 원(춘천)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">충 남(대전)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">충 북(청주)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">경 북(안동)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">경 남(부산)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">전 북(전주)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">전 남(목포)</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="mybox" style="box-shadow: 0px 0px 0px 0px;" id="bucket-list">
+        <div class="row">
+            <div class="col-md-1 arrow">
+                <span class="material-symbols-outlined">
+                    arrow_back_ios
+                </span>
+            </div>
+            <div class="row col-10 row-cols-md-3 g-4" style="margin:0">
+                <div class="col mycard">
+                    <div class="card">
+                        <img src="https://cdnimg.melon.co.kr/cm2/album/images/112/40/232/11240232_20230509151820_500.jpg/melon/resize/120/quality/80/optimize"
+                            class="card-img-top" alt="...">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">제목</li>
+                            <li class="list-group-item">글 요약 내용..................................................</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col mycard">
+                    <div class="card">
+                        <img src="https://cdnimg.melon.co.kr/cm2/album/images/112/40/232/11240232_20230509151820_500.jpg/melon/resize/120/quality/80/optimize"
+                            class="card-img-top" alt="...">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">제목</li>
+                            <li class="list-group-item">글 요약 내용..................................................</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col mycard">
+                    <div class="card">
+                        <img src="https://cdnimg.melon.co.kr/cm2/album/images/112/40/232/11240232_20230509151820_500.jpg/melon/resize/120/quality/80/optimize"
+                            class="card-img-top" alt="...">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">제목</li>
+                            <li class="list-group-item">글 요약 내용..................................................</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-1 arrow">
+                <span class="material-symbols-outlined">
+                    arrow_forward_ios
+                </span>
+            </div>
+        </div>
+
+    </div>
 
 </body>
 
