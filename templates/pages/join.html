@@ -92,7 +92,7 @@
         function get_id() {
             let id = $("#id").val();
 
-            if (id.length < 5) {
+            if (id.trim().length < 5) {
                 alert("아이디는 5글자 이상 적어주세요")
                 return
             }
@@ -134,7 +134,7 @@
                 $("#id").focus();
                 return;
             }
-
+            console.log(id)
             if (id.length < 5) {
                 alert("아이디를 5글자 이상 입력해주세요.");
                 $("#id").focus();
