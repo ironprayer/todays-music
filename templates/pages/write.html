@@ -18,7 +18,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
-    <title>Document</title>
+    <title>글쓰기</title>
 
     <style>
         * {
@@ -81,14 +81,15 @@
             let title = $("#title").val()
             let music_link = $("#music_link").val()
             let content = $("#content").val()
+            let id = getCookie("id")
 
-            console.log(region, temp_icon, temp, title, music_link, content)
             formData.append("region_give", region)
             formData.append("temp_icon_give", temp_icon)
             formData.append("temp_give", temp)
             formData.append("title_give", title)
             formData.append("music_link_give", music_link)
             formData.append("content_give", content)
+            formData.append("id_give", id)
 
             fetch('/posts', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
                 alert(data["msg"])
