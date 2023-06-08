@@ -54,20 +54,25 @@
 
     <script>
         $(document).ready(function () {
-            show_detail();
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const post_id = urlParams.get('id')
+
+            show_detail(post_id);
         });
-        function show_detail() {
-            fetch("/posts/detail").then((res) => res.json()).then((data) => {
-                let rows = data['result']
+        function show_detail(post_id) {
+            fetch(`/posts/detail?postId=${post_id}`).then((res) => res.json()).then((data) => {
                 $('#detail1').empty()
                 $('#detail2').empty()
-                let title = rows[0]['title']
-                let region = rows[0]['region']
-                let temp_icon = rows[0]['temp_icon']
-                let temp = rows[0]['temp']
-                let content = rows[0]['content']
-                let ogtitle = rows[0]['ogtitle']
-                let ogimage = rows[0]['ogimage']
+                console.log(data['result'])
+                let rows = data['result']
+                let title = rows['title']
+                let region = rows['region']
+                let temp_icon = rows['temp_icon']
+                let temp = rows['temp']
+                let content = rows['content']
+                let ogtitle = rows['ogtitle']
+                let ogimage = rows['ogimage']
                 let temp_html = ``
                 temp_html = `<div class="d-flex flex-row bd-highlight mb-3">
                                 <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text" >${region}</label>
@@ -92,19 +97,19 @@
                 
             });
 
-            fetch("/posts/comment").then((res) => res.json()).then((data) => {
+            fetch(`/posts/comment?postId=${post_id}`).then((res) => res.json()).then((data) => {
                 let rows = data['result']
                 $('#comment-list').empty()
-                rows.forEach((a) => {
+                rows.forEach((a, index) => {
                     let comment = a['comment']
-                    let num = a['num']
                     let star = a['star']
+                    console.log(a)
 
                     let star_image = '⭐'.repeat(star)
 
                     let temp_html = ``
                     temp_html = `<tr>
-                                    <th scope="row">${num}</th>
+                                    <th scope="row">${index + 1}</th>
                                     <td>${comment}</td>
                                     <td>${star_image}</td>
                                 </tr>`
@@ -115,12 +120,26 @@
         }
 
         function save_comment() {
-            let comment = $('#comment').val();
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            
+            const post_id = urlParams.get('id')
+            let user_id = getCookie("id")
+            let comment = $('#comment').val()
             let star = $('#star').val()
+
+            
+            if (user_id == null) {
+                alert("로그인이 필요합니다.")
+                window.location.href = "/login"
+            }
+            
 
             let formData = new FormData();
             formData.append("comment_give", comment);
             formData.append("star_give", star);
+            formData.append("userid_give", user_id);
+            formData.append("postid_give", post_id)
 
             fetch('/posts/comment', { method: "POST", body: formData, }).then((response) => response.json()).then((data) => {
                 alert(data["msg"]);

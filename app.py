@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import json
 from bson import json_util
 import math
+from bson import ObjectId
 
 app = Flask(__name__, static_folder="templates/static")
 
@@ -177,19 +178,17 @@ def getPostPageCountWithRegion():
 # 글 상세 조회
 @app.route("/posts/detail", methods=["GET"])
 def getPostDetail():
-    all_posts = list(db.posts.find({}, {'_id': False}))
-    # all_posts = list(db.posts.find({})) # 전체 검색
-    
-    # id = str(all_data[0]["_id"]) # _id 문자로 변경
-    # id_data = db.posts.find_one({"_id" : ObjectId(id)}) # 문자를 ObjectId로 변환해서 검색
+    post_id = request.args.get("postId", type=str)
+    result = db.posts.find_one({"_id" : ObjectId(post_id)}, {'_id': False})
 
-    return jsonify({'result': all_posts})
+    return jsonify({'result': result})
 
 
 # 댓글 목록 조회
 @app.route("/posts/comment", methods=["GET"])
 def getPostComments():
-    all_comment = list(db.comment.find({}, {'_id': False}))
+    post_id = request.args.get("postId", type=str)
+    all_comment = list(db.comment.find({"postId" : post_id}, {'_id': False}))
 
     return jsonify({'result': all_comment})
 
@@ -199,13 +198,17 @@ def getPostComments():
 def writeComment():
     comment_receive = request.form['comment_give']
     star_receive = request.form['star_give']
+    user_id = request.form['userid_give']
+    post_id = request.form['postid_give']
 
     comment_list = list(db.comment.find({}, {'_id': False}))
     count = len(comment_list) + 1
     doc = {
         'num':count,
         'comment' : comment_receive,
-        'star':star_receive
+        'star':star_receive,
+        'userId':user_id,
+        'postId':post_id
     }
     db.comment.insert_one(doc)
 

@@ -197,7 +197,7 @@
         function show_posts(id, startIndex) {
             fetch(`/posts?id=${id}&startIndex=${startIndex}`).then(res => res.json()).then(data => {
                 let rows = data['result']
-
+                
                 $('#cards-box').empty()
                 rows.forEach((row) => {
                     let title = row['title']
