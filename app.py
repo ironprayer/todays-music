@@ -5,7 +5,7 @@ import certifi
 app = Flask(__name__, static_folder="templates/static")
 
 client = MongoClient(
-    "mongodb+srv://sparta:test@cluster0.ihsomwt.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://sparta:test@cluster0.p5xkuy6.mongodb.net/?retryWrites=true&w=majority",
     tlsCAFile=certifi.where(),
 )
 db = client.dbsparta
@@ -70,7 +70,7 @@ def join():
 @app.route("/user/idcheck", methods=["POST"])
 def idcheck():
     id_receive = request.form["id_give"]
-    user = db.user.find_one({"id": id_receive},{"_id":False})
+    user = db.user.find_one({"id": id_receive}, {"_id": False})
 
     return jsonify({"result": user})
 
@@ -92,12 +92,12 @@ def login():
     password_receive = request.form["password_give"]
 
     user = db.user.find_one({"id": id_receive})
-    
-    if user == None :
+
+    if user == None:
         result = 0
-    elif user['password'] != password_receive :
+    elif user["password"] != password_receive:
         result = 1
-    else :
+    else:
         result = 2
 
     return jsonify({"result": result})
