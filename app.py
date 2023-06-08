@@ -5,7 +5,7 @@ import certifi
 app = Flask(__name__, static_folder="templates/static")
 
 client = MongoClient(
-    "mongodb+srv://sparta:test@cluster0.p5xkuy6.mongodb.net/?retryWrites=true&w=majority",
+    "mongodb+srv://sparta:test@cluster0.ihsomwt.mongodb.net/?retryWrites=true&w=majority",
     tlsCAFile=certifi.where(),
 )
 db = client.dbsparta
@@ -91,9 +91,14 @@ def login():
     id_receive = request.form["id_give"]
     password_receive = request.form["password_give"]
 
-    # user = db.users.find_one({"id": id_receive, "password":password_receive})
-
-    return render_template("pages/main.html")
+    user = db.user.find_one({"id": id_receive})
+    if user != id_receive:  # 일치하는 아이디가 없을 때
+        return jsonify({"result": 0})
+    else:  # 일치하는 아이디가 있을 때
+        if user != password_receive:  # 일치하는 비밀번호가 없을 때
+            return jsonify({"result": 1})
+        else:  # 모두 일치할 때
+            return jsonify({"result": 2})
 
 
 # 로그인

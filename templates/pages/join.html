@@ -105,7 +105,7 @@
           .then((response) => response.json())
           .then((data) => {
             let user = data["result"];
-            if (user == id) {
+            if (user === id) {
               alert("중복된 아이디입니다.");
               return false;
               $("#id").empty();
