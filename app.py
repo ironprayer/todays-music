@@ -70,7 +70,7 @@ def join():
 @app.route("/user/idcheck", methods=["POST"])
 def idcheck():
     id_receive = request.form["id_give"]
-    user = db.user.find_one({"id": id_receive})
+    user = db.user.find_one({"id": id_receive},{"_id":False})
 
     return jsonify({"result": user})
 
@@ -92,13 +92,15 @@ def login():
     password_receive = request.form["password_give"]
 
     user = db.user.find_one({"id": id_receive})
-    if user != id_receive:  # 일치하는 아이디가 없을 때
-        return jsonify({"result": 0})
-    else:  # 일치하는 아이디가 있을 때
-        if user != password_receive:  # 일치하는 비밀번호가 없을 때
-            return jsonify({"result": 1})
-        else:  # 모두 일치할 때
-            return jsonify({"result": 2})
+    
+    if user == None :
+        result = 0
+    elif user['password'] != password_receive :
+        result = 1
+    else :
+        result = 2
+
+    return jsonify({"result": result})
 
 
 # 로그인
