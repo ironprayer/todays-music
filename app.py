@@ -95,18 +95,36 @@ def getPostsWithRegion():
 @app.route("/posts/detail", methods=["GET"])
 def getPostDetail():
     all_posts = list(db.posts.find({}, {'_id': False}))
+    # all_posts = list(db.posts.find({})) # 전체 검색
+    
+    # id = str(all_data[0]["_id"]) # _id 문자로 변경
+    # id_data = db.posts.find_one({"_id" : ObjectId(id)}) # 문자를 ObjectId로 변환해서 검색
 
     return jsonify({'result': all_posts})
 
 # 댓글 목록 조회
 @app.route("/posts/comment", methods=["GET"])
 def getPostComments():
-    pass
+    all_comment = list(db.comment.find({}, {'_id': False}))
+
+    return jsonify({'result': all_comment})
 
 # 댓글 작성
 @app.route("/posts/comment", methods=["POST"])
 def writeComment():
-    pass
+    comment_receive = request.form['comment_give']
+    star_receive = request.form['star_give']
+
+    comment_list = list(db.comment.find({}, {'_id': False}))
+    count = len(comment_list) + 1
+    doc = {
+        'num':count,
+        'comment' : comment_receive,
+        'star':star_receive
+    }
+    db.comment.insert_one(doc)
+
+    return jsonify({'msg': '등록 완료!'})
 
 # 지역별 날씨 조회
 @app.route("/posts/weather", methods=["GET"])

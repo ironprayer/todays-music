@@ -89,7 +89,6 @@
                 let content = rows[0]['content']
                 let ogtitle = rows[0]['ogtitle']
                 let ogimage = rows[0]['ogimage']
-                console.log(rows)
                 let temp_html = ``
                 temp_html = `<div class="d-flex flex-row bd-highlight mb-3">
                                 <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text" >${region}</label>
@@ -109,9 +108,44 @@
                             <div style="width: 60%;">
                                 <h4>${content}</h4>
                             </div>`
-
                 $('#detail1').append(temp_html)
                 $('#detail2').append(temp_html2)
+                
+            });
+
+            fetch("/posts/comment").then((res) => res.json()).then((data) => {
+                let rows = data['result']
+                $('#comment-list').empty()
+                rows.forEach((a) => {
+                    let comment = a['comment']
+                    let num = a['num']
+                    let star = a['star']
+
+                    let star_image = '⭐'.repeat(star)
+
+                    let temp_html = ``
+                    temp_html = `<tr>
+                                    <th scope="row">${num}</th>
+                                    <td>${comment}</td>
+                                    <td>${star_image}</td>
+                                </tr>`
+                    $('#comment-list').append(temp_html)
+                })
+            });
+
+        }
+
+        function save_comment() {
+            let comment = $('#comment').val();
+            let star = $('#star').val()
+
+            let formData = new FormData();
+            formData.append("comment_give", comment);
+            formData.append("star_give", star);
+
+            fetch('/posts/comment', { method: "POST", body: formData, }).then((response) => response.json()).then((data) => {
+                alert(data["msg"]);
+                window.location.reload()
             });
         }
     </script>
@@ -153,7 +187,7 @@
     <div class="mybox">
         <table class="mycomment">
             <div class="input-group mb-3">
-                <input class="form-control" style="width: 65%;" type="text" placeholder="내용을 입력하세요." />
+                <input id="comment" class="form-control" style="width: 65%;" type="text" placeholder="내용을 입력하세요." />
                 <label class="input-group-text" for="inputGroupSelect01">별점</label>
                 <select class="form-select" id="star">
                     <option selected>-- 선택하기 --</option>
@@ -163,7 +197,7 @@
                     <option value="4">⭐⭐⭐⭐</option>
                     <option value="5">⭐⭐⭐⭐⭐</option>
                 </select>
-                <button type="button" class="btn btn-outline-primary">등록</button>
+                <button onclick="save_comment()" type="button" class="btn btn-outline-primary">등록</button>
             </div>
         </table>
     </div>
@@ -176,7 +210,7 @@
                     <th scope="col" style="width: 20%;">별점</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="comment-list">
                 <tr>
                     <th scope="row">1</th>
                     <td>댓글 내용</td>
