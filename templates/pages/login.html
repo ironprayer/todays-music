@@ -87,12 +87,12 @@
             $("#temp").text(data["temp"]);
           });
       }
-      function save_comment() {
+      function login() {
         let formData = new FormData();
         let name = $("#name").val();
         formData.append("name_give", name);
 
-        fetch("/guestbook", { method: "POST", body: formData })
+        fetch("/user/login", { method: "POST", body: formData })
           .then((res) => res.json())
           .then((data) => {
             alert(data["msg"]);
@@ -126,7 +126,12 @@
             <button type="button" class="btn btn-primary" id="login">
               로그인
             </button>
-            <button type="button" class="btn btn-secondary" id="join">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="join"
+              onClick="location.href='/join'"
+            >
               회원가입
             </button>
           </div>

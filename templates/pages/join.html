@@ -79,32 +79,50 @@
     </style>
 
     <script>
-      $(document).ready(function () {});
-      function set_temp() {
-        fetch("http://spartacodingclub.shop/sparta_api/weather/seoul")
-          .then((res) => res.json())
-          .then((data) => {
-            $("#temp").text(data["temp"]);
-          });
-      }
-      function save_comment() {
-        let formData = new FormData();
-        let name = $("#name").val();
-        formData.append("name_give", name);
+      function save_join() {
+        let id = $(".id").val();
+        let name = $(".name").val();
+        let password = $(".password").val();
 
-        fetch("/guestbook", { method: "POST", body: formData })
+        let formData = new FormData();
+        formData.append("id_give", id);
+        formData.append("name_give", name);
+        formData.append("password_give", password);
+
+        fetch("/user/join", { method: "POST", body: formData })
           .then((res) => res.json())
           .then((data) => {
             alert(data["msg"]);
-            window.location.reload();
           });
       }
-      function show_comment() {
-        fetch("/guestbook")
+
+      function get_id() {
+        fetch("/user")
           .then((res) => res.json())
           .then((data) => {
             let rows = data["result"];
+            rows.forEach((a) => {
+              let id = a["id"];
+              if (id == $(".id").val()) {
+                alert("중복된 아이디입니다.");
+                return false;
+                $(".id").empty();
+              } else {
+                alert("사용 가능한 아이디입니다.");
+              }
+            });
           });
+      }
+
+      function validate_password() {
+        let password = document.getElementById("password").value;
+        let passwordcheck = document.getElementById("passwordcheck").value;
+
+        if (password != passwordcheck) {
+          alert("비밀번호가 일치하지 않습니다.");
+          return false;
+        }
+        return true;
       }
     </script>
   </head>
@@ -119,6 +137,13 @@
           <div class="join_area">
             <p>
               <input type="text" placeholder="아이디" id="id" />
+              <button
+                type="button"
+                onclick="return get_id()"
+                class="btn btn-primary"
+              >
+                중복확인
+              </button>
             </p>
             <p>
               <input type="text" placeholder="닉네임" id="name" />
@@ -133,7 +158,13 @@
                 id="passwordcheck"
               />
             </p>
-            <button type="button" class="btn btn-primary">가입하기</button>
+            <button
+              type="button"
+              onclick="return validate_password()"
+              class="btn btn-primary"
+            >
+              가입하기
+            </button>
           </div>
         </div>
       </div>
