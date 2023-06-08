@@ -13,6 +13,9 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
+    <link href="{{url_for('static', filename='css/banner.css')}}" rel="stylesheet" />
+    <script src="{{url_for('static', filename='js/banner.js')}}"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
     <title>Document</title>
@@ -21,25 +24,6 @@
         * {
             font-family: "Gowun Batang", serif;
             /* color: white; */
-        }
-
-        .banner {
-            width: 100%;
-            height: 200px;
-
-            background-image: linear-gradient(0deg,
-                rgba(0, 0, 0, 0.5),
-                rgba(0, 0, 0, 0.5)),
-            url("{{url_for('static', filename='top_image.jpg')}}");
-            background-position: center;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         .inputbox {
@@ -74,8 +58,8 @@
     <script>
         $(document).ready(function () {
             set_temp('서울')
-            
-            $('#region').change(function(){
+
+            $('#region').change(function () {
                 set_temp(this.value)
             })
         });
@@ -103,17 +87,13 @@
             formData.append("temp_icon_give", temp_icon)
             formData.append("temp_give", temp)
             formData.append("title_give", title)
-            formData.append("music_link_give",music_link )
+            formData.append("music_link_give", music_link)
             formData.append("content_give", content)
 
             fetch('/posts', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
                 alert(data["msg"])
-                window.location.href = window.location.protocol + "//" + window.location.host + "/main" 
+                window.location.href = window.location.protocol + "//" + window.location.host + "/main"
             });
-        }
-
-        function goHome() {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/main"
         }
 
     </script>
@@ -123,10 +103,6 @@
 </head>
 
 <body>
-    <div class="banner">
-        <h1 onclick="goHome()">Today's Music</h1>
-    </div>
-
     <div class="mybox">
         <div class="d-flex flex-row bd-highlight mb-3">
             <select class="form-select" id="region" style="width:25%">
@@ -140,8 +116,10 @@
                 <option value="전북">전북</option>
                 <option value="전남">전남</option>
             </select>
-            <input id="temp_icon" value="맑음" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text" disabled/>
-            <input id="temp" value="27.5" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text" disabled/>
+            <input id="temp_icon" value="맑음" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text"
+                disabled />
+            <input id="temp" value="27.5" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text"
+                disabled />
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">제 목</label>

@@ -12,7 +12,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-
+    
+    
+    <link href="{{url_for('static', filename='css/banner.css')}}" rel="stylesheet"/>
+    <script src="{{url_for('static', filename='js/banner.js')}}"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet"
@@ -23,25 +27,6 @@
     <style>
         * {
             font-family: "Gowun Batang", serif;
-        }
-
-        .banner {
-            width: 100%;
-            height: 200px;
-
-            background-image: linear-gradient(0deg,
-                rgba(0, 0, 0, 0.5),
-                rgba(0, 0, 0, 0.5)),
-            url("{{url_for('static', filename='top_image.jpg')}}");
-            background-position: center;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         .mybox {
@@ -150,12 +135,12 @@
             })
         }
 
-        function goWrite(){
-            window.location.href = window.location.protocol + "//" + window.location.host + "/write" 
+        function goWrite() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/write"
         }
 
-        function goDetail(id){
-            window.location.href = window.location.protocol + "//" + window.location.host + `/detail?id=${id}` 
+        function goDetail(id) {
+            window.location.href = window.location.protocol + "//" + window.location.host + `/detail?id=${id}`
         }
     </script>
 
@@ -164,9 +149,6 @@
 </head>
 
 <body>
-    <div class="banner">
-        <h1>Today's Music</h1>
-    </div>
     <div class="regionbox">
         <ul id="pills-tab" class="nav nav-pills">
             <li class="nav-item">
