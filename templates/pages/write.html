@@ -91,15 +91,27 @@
 
         function save_post() {
             let formData = new FormData();
-            let name = $("#name").val()
-            formData.append("name_give", name)
+            let region = $("#region").val()
+            let temp_icon = $("#temp_icon").val()
+            let temp = $("#temp").val()
+            let title = $("#title").val()
+            let music_link = $("#music_link").val()
+            let content = $("#content").val()
 
-            fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
+            console.log(region, temp_icon, temp, title, music_link, content)
+            formData.append("region_give", region)
+            formData.append("temp_icon_give", temp_icon)
+            formData.append("temp_give", temp)
+            formData.append("title_give", title)
+            formData.append("music_link_give",music_link )
+            formData.append("content_give", content)
+
+            fetch('/posts', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
                 alert(data["msg"])
-                window.location.reload()
+                window.location.href = window.location.protocol + "//" + window.location.host + "/main" 
             });
         }
-        
+
     </script>
 
 
@@ -129,11 +141,11 @@
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">제 목</label>
-            <input class="form-control" style="width: 65%;" type="text" placeholder="예) 봄날의 하늘거리는 벚꽃" />
+            <input id="title" class="form-control" style="width: 65%;" type="text" placeholder="예) 봄날의 하늘거리는 벚꽃" />
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">링 크</label>
-            <input class="form-control" style="width: 65%;" type="text" placeholder="예) 벚꽃엔딩 URL..." />
+            <input id="music_link" class="form-control" style="width: 65%;" type="text" placeholder="예) 벚꽃엔딩 URL..." />
         </div>
     </div>
 
@@ -144,7 +156,7 @@
     </div>
 
     <div class="write-box">
-        <button type="button" class="btn btn-primary" id="write">
+        <button onclick="save_post()" type="button" class="btn btn-primary" id="write">
             작 성
         </button>
     </div>

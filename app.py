@@ -143,7 +143,47 @@ def getRegionWeather():
 # 글 작성
 @app.route("/posts", methods=["POST"])
 def writePost():
-    pass
+    region_receive = request.form["region_give"]
+    temp_icon_receive = request.form["temp_icon_give"]
+    temp_receive = request.form["temp_give"]
+    title_receive = request.form["title_give"]
+    music_link_receive = request.form["music_link_give"]
+    content_receive = request.form["content_give"]
+    ogtitle = ''
+    ogimage = '' 
+    ogdesc = ''
+    is_validation_music_link = True   
+
+    try :
+        headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+        data = requests.get(music_link_receive,headers=headers)
+    except :
+        is_validation_music_link = False
+        music_link_receive = ''
+
+    if is_validation_music_link :
+        soup = BeautifulSoup(data.text, 'html.parser')
+
+        ogtitle = soup.select_one('meta[property="og:title"]')['content']
+        ogimage = soup.select_one('meta[property="og:image"]')['content']
+        ogdesc = soup.select_one('meta[property="og:description"]')['content']
+
+    doc = {
+        'region' : region_receive,
+        'temp_icon': temp_icon_receive,
+        'temp': temp_receive,
+        'title': title_receive,
+        'music_link': music_link_receive,
+        'content': content_receive,
+        'ogtitle': ogtitle,
+        'ogimage': ogimage,
+        'ogdesc': ogdesc
+    }
+
+    db.posts.insert_one(doc)
+
+    return jsonify({'msg': '저장 완료'})
+    
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
