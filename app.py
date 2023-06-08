@@ -70,7 +70,7 @@ def join():
 @app.route("/user/idcheck", methods=["POST"])
 def idcheck():
     id_receive = request.form["id_give"]
-    user = db.users.find_one({"id": id_receive})
+    user = db.user.find_one({"id": id_receive})
 
     return jsonify({"result": user})
 
