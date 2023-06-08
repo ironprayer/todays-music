@@ -159,16 +159,35 @@
     </style>
 
     <script>
-      $(document).ready(function () {});
-      function set_temp() {
-        fetch("http://spartacodingclub.shop/sparta_api/weather/seoul")
-          .then((res) => res.json())
-          .then((data) => {
-            $("#temp").text(data["temp"]);
-          });
-      }
-      function save_comment() {
-        let formData = new FormData();
+    //   $(document).ready(function () {});
+    //   function set_temp() {
+    //     fetch("http://spartacodingclub.shop/sparta_api/weather/seoul")
+    //       .then((res) => res.json())
+    //       .then((data) => {
+    //         $("#temp").text(data["temp"]);
+    //       });
+    //   }
+
+    //   function save_comment() {
+    //     let formData = new FormData();
+
+    $(document).ready(function () {
+        find_user()
+    });
+            function find_user() {
+                fetch("/user").then(res => res.json()).then(data => {
+                    data["users_found"].forEach((a) => {
+
+                        console.log(data);
+
+                    })
+
+                })
+        }
+            function fixname() {
+                let formData = new FormData();
+            formData.append("newusername", "renewusername")
+        }
 
 </script>
 
@@ -184,10 +203,10 @@
     <body>
         <div class="mybox">
             <div class="myprofile">
-                <input id="bucket" class="form-control" type="text" placeholder="ID" />
-                <input id="bucket" class="form-control" type="text" placeholder="USER NAME" />
+                <input id="user_id" class="form-control" type="text" placeholder="ID" />
+                <input id="user_name" class="form-control" type="text" placeholder="USER NAME" />
                 <div class="fixbtn">
-                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">수정</button>
+                    <button onclick="fixname()" type="button" class="btn btn-outline-primary">수정</button>
                 </div>
             </div>
         </div>

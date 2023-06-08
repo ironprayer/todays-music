@@ -44,7 +44,7 @@ def my_page():
 def write_page():
    return render_template('pages/write.html')
 
-# 회원 가입
+#회원 가입
 @app.route("/user/join", methods=["POST"])
 def join():
     name_receive = request.form['name_give']
@@ -57,17 +57,26 @@ def join():
 
     return jsonify({'msg': '저장 완료'})
 
-# 유저 정보 조회
+
+@app.route("/user", methods=["GET"])
+def getUser():
+    users_list = list(db.user.find({}, {'_id':False}))
+    
+    return jsonify({'users_found': users_list})
+
+
+
+#유저 정보 조회
 @app.route("/user", methods=["GET"])
 def getUser():
     ns = request.args.get("id", type=str) # 파라미터 받는 부분
 
-    all_comments = list(db.fan.find({}, {'_id':False}))
+    all_comments = list(db.user.find({}, {'_id':False}))
     
     return jsonify({'result': all_comments})
 
 
-# 로그인
+#로그인
 @app.route("/user/login", methods=["POST"])
 def login():
     pass
