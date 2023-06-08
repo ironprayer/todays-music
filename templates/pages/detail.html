@@ -75,26 +75,44 @@
 
     <script>
         $(document).ready(function () {
+            show_detail();
         });
-        function set_temp() {
-            fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
-                $('#temp').text(data['temp'])
-            });
-        }
-        function save_comment() {
-            let formData = new FormData();
-            let name = $("#name").val()
-            formData.append("name_give", name)
-
-            fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
-                alert(data["msg"])
-                window.location.reload()
-            });
-        }
-        function show_comment() {
-            fetch('/guestbook').then((res) => res.json()).then((data) => {
+        function show_detail() {
+            fetch("/posts/detail").then((res) => res.json()).then((data) => {
                 let rows = data['result']
-            })
+                $('#detail1').empty()
+                $('#detail2').empty()
+                let title = rows[0]['title']
+                let region = rows[0]['region']
+                let temp_icon = rows[0]['temp_icon']
+                let temp = rows[0]['temp']
+                let content = rows[0]['content']
+                let ogtitle = rows[0]['ogtitle']
+                let ogimage = rows[0]['ogimage']
+                console.log(rows)
+                let temp_html = ``
+                temp_html = `<div class="d-flex flex-row bd-highlight mb-3">
+                                <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text" >${region}</label>
+                                <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text" >${temp_icon}</label>
+                                <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text" >${temp}℃</label>
+                            </div>
+                            <div>
+                                <h2 style="margin-left: 10px">${title}</h2>
+                            </div>`
+                let temp_html2 = ``
+                temp_html2 = `<div class="card" style="width: 40%; max-width: 300px; max-height: 300px; margin-left: 50px; margin-right: 50px;">
+                                <img src="${ogimage}" class="card-img-top" alt="album" style="max-width: 300px; max-height: 300px;">
+                                <div class="card-body">
+                                    <p class="card-text" style="display: flex; flex-direction: column;align-items: center;justify-content: center;">${ogtitle}</p>
+                                </div>
+                            </div>
+                            <div style="width: 60%;">
+                                <h4>${content}</h4>
+                            </div>`
+
+                $('#detail1').append(temp_html)
+                $('#detail2').append(temp_html2)
+            });
         }
     </script>
 
@@ -107,21 +125,21 @@
         <h1>Today's music</h1>
     </div>
 
-    <div class="mybox">
+    <div class="mybox" id="detail1">
         <div class="d-flex flex-row bd-highlight mb-3">
-            <div class="p-2 bd-highlight">selected-region</div>
-            <div class="p-2 bd-highlight">emoticon</div>
-            <div class="p-2 bd-highlight">live-temp</div>
+            <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text">region</label>
+            <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text">temp_icon</label>
+            <label class="form-control" style="width: 10%; margin:0px 5px 0px 5px; background-color: ivory;" type="text">temp℃</label>
         </div>
         <div>
-            <h4>제목 출력 부분</h4>
+            <h2 style="margin-left: 10px">제목 출력 부분</h2>
         </div>
     </div>
 
     <div class="mybox">
-        <div class="mybox-content">
-            <div class="card" style="width: 40%;">
-                <img src="..." class="card-img-top" alt="...">
+        <div class="mybox-content" id="detail2">
+            <div class="card" style="width: 40%; max-width: 300px; max-height: 300px; margin-left: 50px; margin-right: 50px;">
+                <img src="..." class="card-img-top" alt="album">
                 <div class="card-body">
                     <p class="card-text">앨범 설명.</p>
                 </div>
@@ -132,7 +150,6 @@
         </div>
     </div>
 
-    </div>
     <div class="mybox">
         <table class="mycomment">
             <div class="input-group mb-3">

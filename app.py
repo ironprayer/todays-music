@@ -94,7 +94,9 @@ def getPostsWithRegion():
 # 글 상세 조회
 @app.route("/posts/detail", methods=["GET"])
 def getPostDetail():
-    pass
+    all_posts = list(db.posts.find({}, {'_id': False}))
+
+    return jsonify({'result': all_posts})
 
 # 댓글 목록 조회
 @app.route("/posts/comment", methods=["GET"])
