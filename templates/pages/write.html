@@ -13,6 +13,9 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
+    <link href="{{url_for('static', filename='css/banner.css')}}" rel="stylesheet" />
+    <script src="{{url_for('static', filename='js/banner.js')}}"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
     <title>Document</title>
@@ -21,25 +24,6 @@
         * {
             font-family: "Gowun Batang", serif;
             /* color: white; */
-        }
-
-        .banner {
-            width: 100%;
-            height: 200px;
-
-            background-image: linear-gradient(0deg,
-                rgba(0, 0, 0, 0.5),
-                rgba(0, 0, 0, 0.5)),
-            url("{{url_for('static', filename='top_image.jpg')}}");
-            background-position: center;
-            background-size: cover;
-
-            color: white;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         .inputbox {
@@ -73,27 +57,45 @@
 
     <script>
         $(document).ready(function () {
-        });
-        function set_temp() {
-            fetch("http://spartacodingclub.shop/sparta_api/weather/seoul").then((res) => res.json()).then((data) => {
-                $('#temp').text(data['temp'])
-            });
-        }
-        function save_comment() {
-            let formData = new FormData();
-            let name = $("#name").val()
-            formData.append("name_give", name)
+            set_temp('서울')
 
-            fetch('/guestbook', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
-                alert(data["msg"])
-                window.location.reload()
+            $('#region').change(function () {
+                set_temp(this.value)
+            })
+        });
+
+        function set_temp(region) {
+            fetch(`/posts/weather?region=${region}`).then((res) => res.json()).then((data) => {
+                let temp_icon = data['result']['wetrTxt']
+                let temp = data['result']["tmp"]
+                $("#temp_icon").val(temp_icon)
+                $("#temp").val(temp)
             });
         }
-        function show_comment() {
-            fetch('/guestbook').then((res) => res.json()).then((data) => {
-                let rows = data['result']
-            })
+
+        function save_post() {
+            let formData = new FormData();
+            let region = $("#region").val()
+            let temp_icon = $("#temp_icon").val()
+            let temp = $("#temp").val()
+            let title = $("#title").val()
+            let music_link = $("#music_link").val()
+            let content = $("#content").val()
+
+            console.log(region, temp_icon, temp, title, music_link, content)
+            formData.append("region_give", region)
+            formData.append("temp_icon_give", temp_icon)
+            formData.append("temp_give", temp)
+            formData.append("title_give", title)
+            formData.append("music_link_give", music_link)
+            formData.append("content_give", content)
+
+            fetch('/posts', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
+                alert(data["msg"])
+                window.location.href = window.location.protocol + "//" + window.location.host + "/main"
+            });
         }
+
     </script>
 
 
@@ -101,15 +103,10 @@
 </head>
 
 <body>
-    <div class="banner">
-        <h1>Today's music</h1>
-    </div>
-
     <div class="mybox">
         <div class="d-flex flex-row bd-highlight mb-3">
             <select class="form-select" id="region" style="width:25%">
-                <option selected>-- 지역 선택하기 --</option>
-                <option value="서울">서울</option>
+                <option value="서울" selected>서울</option>
                 <option value="경기">경기</option>
                 <option value="강원">강원</option>
                 <option value="충남">충남</option>
@@ -119,16 +116,18 @@
                 <option value="전북">전북</option>
                 <option value="전남">전남</option>
             </select>
-            <input id="temp_icon" value="맑음" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text" disabled/>
-            <input id="temp" value="27.5" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text" disabled/>
+            <input id="temp_icon" value="맑음" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text"
+                disabled />
+            <input id="temp" value="27.5" class="form-control" style="width: 10%; margin:0px 5px 0px 5px" type="text"
+                disabled />
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">제 목</label>
-            <input class="form-control" style="width: 65%;" type="text" placeholder="예) 봄날의 하늘거리는 벚꽃" />
+            <input id="title" class="form-control" style="width: 65%;" type="text" placeholder="예) 봄날의 하늘거리는 벚꽃" />
         </div>
         <div class="input-group mb-3">
             <label class="input-group-text">링 크</label>
-            <input class="form-control" style="width: 65%;" type="text" placeholder="예) 벚꽃엔딩 URL..." />
+            <input id="music_link" class="form-control" style="width: 65%;" type="text" placeholder="예) 벚꽃엔딩 URL..." />
         </div>
     </div>
 
@@ -139,7 +138,7 @@
     </div>
 
     <div class="write-box">
-        <button type="button" class="btn btn-primary" id="write">
+        <button onclick="save_post()" type="button" class="btn btn-primary" id="write">
             작 성
         </button>
     </div>
