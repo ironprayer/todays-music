@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import certifi
+import requests
+from bs4 import BeautifulSoup
+import json
+
 app = Flask(__name__, static_folder="templates/static")
 
 client = MongoClient('mongodb+srv://sparta:test@cluster0.p5xkuy6.mongodb.net/?retryWrites=true&w=majority', tlsCAFile=certifi.where())
@@ -109,7 +113,32 @@ def writeComment():
 # 지역별 날씨 조회
 @app.route("/posts/weather", methods=["GET"])
 def getRegionWeather():
-    pass
+    region = request.args.get("region", type=str)
+    URL = "https://weather.naver.com/today/api/nation/20230608/now"
+    headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+    data = requests.get(URL,headers=headers).json()
+
+    region_dic = {
+        "서울" : "서울",
+        "경기" : "수원",
+        "강원" : "춘천",
+        "충남" : "대전",
+        "충북" : "청주",
+        "경북" : "안동",
+        "경남" : "부산",
+        "전북" : "전주",
+        "전남" : "목포",
+        "제주" : "제주"
+    }
+    weather_dic = {}
+
+    for value in data.values() :
+        weather_dic[value["regionName"]] = {
+            "wetrTxt" : value["wetrTxt"],
+            "tmp" : value["tmpr"]
+        }
+
+    return jsonify({'result': weather_dic[region_dic[region]]})
 
 # 글 작성
 @app.route("/posts", methods=["POST"])
