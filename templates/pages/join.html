@@ -82,7 +82,7 @@
             font-size: 1em;
             outline: none;
             display: inline;
-            margin-left: -10px;
+            margin-left: -30px;
             box-sizing: border-box;
         }
     </style>
@@ -188,32 +188,39 @@
                 </div>
                 <div class="join_area row">
                     <div class="col-2" style="margin-top:5px"></div>
-                    <div class="col-8 row" style="margin-top:5px">
+                    <div class="col-8 row" style="margin-top:10px">
                         <div class="col-8">
                         <input type="text" placeholder="아이디 5글자 이상" id="id" minlength="5" /></div>
                         <div class="col-4"><input type="button" class="btn btn-primary" style="width:100%;" value="중복확인" onclick="get_id();">
                         </input></div>
                     </div>
-                    <div class="col-2" style="margin-top:5px"></div>
-                    <div class="col-2" style="margin-top:5px"></div>
-                    <div class="col-8" style="margin-top:5px">
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-8" style="margin-top:10px">
                         <input type="text" placeholder="닉네임" id="name" />
                     </div>
-                    <div class="col-2" style="margin-top:5px"></div>
-
-                    <p>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-8" style="margin-top:10px">
                         <input type="password" placeholder="비밀번호 영문,숫자,특수기호 조합 8자리 이상" id="password" minlength="8" />
-                    </p>
-                    <p>
+                    </div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-8" style="margin-top:10px">
                         <input type="password" placeholder="비밀번호 확인" id="passwordcheck" />
-                    </p>
+                    </div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-2" style="margin-top:10px"></div>
+                    <div class="col-8" style="margin-top:10px">
                     <button type="button" class="btn btn-secondary" id="login_page_back"
-                        onClick="location.href='/login'">
+                        onClick="location.href='/login'" style="width:150px; margin-right:10px;">
                         뒤로가기
                     </button>
-                    <button type="button" onclick="save_join();" class="btn btn-primary">
-                        가입하기
+                    <button type="button" onclick="save_join();" class="btn btn-primary" style="width:150px;">
+                      가입하기
                     </button>
+                    </div>
+                  </div>
                 </div>
             </div>
         </div>
