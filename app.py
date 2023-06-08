@@ -46,7 +46,7 @@ def my_page():
 def write_page():
    return render_template('pages/write.html')
 
-# 회원 가입
+#회원 가입
 @app.route("/user/join", methods=["POST"])
 def join():
     name_receive = request.form['name_give']
@@ -59,32 +59,52 @@ def join():
 
     return jsonify({'msg': '저장 완료'})
 
-# 유저 정보 조회
+#유저 정보 조회
 @app.route("/user", methods=["GET"])
 def getUser():
-    ns = request.args.get("id", type=str) # 파라미터 받는 부분
+    id = request.args.get("id", type=str)
+    user = db.user.find_one({'userId' : id}, {'_id':False})
 
-    all_comments = list(db.fan.find({}, {'_id':False}))
-    
-    return jsonify({'result': all_comments})
+    return jsonify({'user': user})
 
+#유저 정보 수정
+@app.route("/user", methods=["PUT"])
+def updateUser():
+    id = request.form['userId']
+    new_name = request.form['newusername']
 
-# 로그인
+    db.user.update_one({"userId": id}, {"$set":{"userName": new_name}})
+
+    return jsonify({'msg': "유저 이름이 변경되었습니다."})
+
+#로그인
 @app.route("/user/login", methods=["POST"])
 def login():
     pass
 
-
-# 로그인
-@app.route("/user", methods=["PUT"])
-def updateUser():
-    pass
-
-
 # 내가 작성할 글 조회
 @app.route("/posts", methods=["GET"])
 def getPost():
-    pass
+    id = request.args.get("id", type=str)
+    startIndex = request.args.get("startIndex", type=int)
+    element_size = 3
+
+    print(id)
+    print(startIndex)
+
+    posts = list(db.posts.find({'userId' : id}).skip(startIndex).limit(element_size))
+
+    return jsonify({'result': json.loads(json_util.dumps(posts))})
+
+# 내가 작성한 글 개수 조회
+@app.route("/posts/my/count", methods=["GET"])
+def getPostPageCount():
+    id = request.args.get("id", type=str)
+    element_size = 3
+    
+    result = len(list(db.posts.find({"userId" : id})))
+
+    return jsonify({'count': math.ceil(result/element_size)})   
 
 # 내가 작성한 글 삭제
 @app.route("/posts", methods=["DELETE"])

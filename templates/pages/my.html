@@ -1,103 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet" />
 
     <title>Document</title>
 
     <style>
         .banner {
-                    width: 100%;
-                    height: 200px;
+            width: 100%;
+            height: 200px;
 
-                    background-image: linear-gradient(0deg,
-                    rgba(0, 0, 0, 0.5),
-                    rgba(0, 0, 0, 0.5)),
-                    url("{{url_for('static', filename='top_image.jpg')}}");
-                    background-position: center;
-                    background-size: cover;
+            background-image: linear-gradient(0deg,
+                rgba(0, 0, 0, 0.5),
+                rgba(0, 0, 0, 0.5)),
+            url("{{url_for('static', filename='top_image.jpg')}}");
+            background-position: center;
+            background-size: cover;
 
-                    color: white;
+            color: white;
 
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         * {
             font-family: "Gowun Batang", serif;
             color: red;
         }
-        
-      .myprofile {
-        width: 95%;
-        max-width: 1100px;
-        padding: 20px;
-        box-shadow: 0px 0px 10px 0px lightblue;
-        margin: 20px auto;
-      }
-       
-      .myprofile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-evenly;
-      }
-      
-      .myprofile > input  {
-        margin-bottom: 5px;
-        width: 80%;
-      }
-      
-      .myprofile > button  {
-         margin-top:5px;
-      
 
-    }
-      
- 
-      .mybox > li {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
+        .myprofile {
+            width: 95%;
+            max-width: 1100px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightblue;
+            margin: 20px auto;
+        }
 
-        margin-bottom: 10px;
-        min-height: 48px;
-      }
-      .mybox > li > h2 {
-        max-width: 75%;
-        font-size: 20px;
-        font-weight: 500;
-        margin-right: auto;
-        margin-bottom: 0px;
-      }
-      .mybox > li > h2.done {
-        text-decoration: line-through;
-      }
+        .myprofile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .myprofile>input {
+            margin-bottom: 5px;
+            width: 80%;
+        }
+
+        .myprofile>button {
+            margin-top: 5px;
 
 
-      * {
+        }
+
+
+        .mybox>li {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+            min-height: 48px;
+        }
+
+        .mybox>li>h2 {
+            max-width: 75%;
+            font-size: 20px;
+            font-weight: 500;
+            margin-right: auto;
+            margin-bottom: 0px;
+        }
+
+        .mybox>li>h2.done {
+            text-decoration: line-through;
+        }
+
+
+        * {
             font-family: 'Gowun Dodum', sans-serif;
         }
 
@@ -116,20 +111,21 @@
             align-items: center;
             justify-content: center;
         }
-        
-       .card-body {
-        display: flex;
-        flex-direction: column;
-            align-items: center;
-            justify-content: center;
-       }   
-       .post-title {
-         color: black;
-         display: flex;
+
+        .card-body {
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-       }
+        }
+
+        .post-title {
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
         .mycomment {
             color: black;
@@ -150,27 +146,106 @@
             max-width: 1200px;
 
         }
-     
+
         .page-item {
             margin-top: 10px;
         }
-
-    
     </style>
 
     <script>
-      $(document).ready(function () {});
-      function set_temp() {
-        fetch("http://spartacodingclub.shop/sparta_api/weather/seoul")
-          .then((res) => res.json())
-          .then((data) => {
-            $("#temp").text(data["temp"]);
-          });
-      }
-      function save_comment() {
-        let formData = new FormData();
+        //   $(document).ready(function () {});
+        //   function set_temp() {
+        //     fetch("http://spartacodingclub.shop/sparta_api/weather/seoul")
+        //       .then((res) => res.json())
+        //       .then((data) => {
+        //         $("#temp").text(data["temp"]);
+        //       });
+        //   }
 
-</script>
+        //   function save_comment() {
+        //     let formData = new FormData();
+
+        $(document).ready(function () {
+            let id = "test";
+            find_user(id)
+            show_posts(id, 0)
+            set_pagination(id)
+        });
+
+        function find_user(id) {
+            fetch(`/user?id=${id}`).then(res => res.json()).then(data => {
+                let user = data['user']
+                let userId = user['userId']
+                let userName = user['userName']
+
+                $('#user_id').val(userId)
+                $('#user_name').val(userName);
+            })
+        }
+
+        function fixname() {
+            let formData = new FormData();
+
+            let id = $('#user_id').val()
+            let newUserName = $('#user_name').val()
+
+            formData.append("userId", id)
+            formData.append("newusername", newUserName)
+
+            fetch(`/user?id=${id}`, { method: "PUT", body: formData, }).then(res => res.json()).then(data => {
+                alert(data['msg'])
+            })
+        }
+
+        function set_pagination(id) {
+            fetch(`/posts/my/count?id=${id}`).then(res => res.json()).then(data => {
+                let count = data['count']
+                
+                $('#pagination-box').empty()
+                for(let i = 0 ; i < count; i++){
+                    let page_num = i + 1
+                    let startIndex = i * 3
+                    let temp_html = `<li class="page-item"><a class="page-link" href="#" onclick="show_posts('${id}', ${startIndex})">${page_num}</a></li>`
+                    $('#pagination-box').append(temp_html)
+                    
+                    
+                }
+            })
+        }
+
+        function show_posts(id, startIndex) {
+            fetch(`/posts?id=${id}&startIndex=${startIndex}`).then(res => res.json()).then(data => {
+                let rows = data['result']
+
+                $('#cards-box').empty()
+                rows.forEach((row)=>{
+                    let title = row['title']
+                    let content = row['content']
+                    let ogimage = row['ogimage']
+
+                    let temp_html = `<div class="col">
+                                    <div class="card h-100">
+                                        <img src="${ogimage}"
+                                            class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="post-title">${title}</h5>
+                                            <p class="mycomment">${content}</p>
+                                            <div calss="fixarea">
+                                                <button onclick="save_bucket()" type="button"
+                                                    class="btn btn-outline-primary">수정</button>
+                                                <button onclick="save_bucket()" type="button"
+                                                    class="btn btn-outline-primary">삭제</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `
+                    $('#cards-box').append(temp_html);
+                })
+            })
+        }
+
+    </script>
 
 
 
@@ -180,14 +255,14 @@
     <div class="banner">
         <h1>Today's Music</h1>
     </div>
-    
+
     <body>
         <div class="mybox">
             <div class="myprofile">
-                <input id="bucket" class="form-control" type="text" placeholder="ID" />
-                <input id="bucket" class="form-control" type="text" placeholder="USER NAME" />
+                <input id="user_id" class="form-control" type="text" placeholder="ID" disabled />
+                <input id="user_name" class="form-control" type="text" placeholder="USER NAME" />
                 <div class="fixbtn">
-                    <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">수정</button>
+                    <button onclick="fixname()" type="button" class="btn btn-outline-primary">수정</button>
                 </div>
             </div>
         </div>
@@ -195,14 +270,16 @@
             <div class="row row-cols-1 row-cols-md-3 g-4" id="cards-box">
                 <div class="col">
                     <div class="card h-100">
-                        <img src="data:image/jpeg;base64,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"
+                        <img src=""
                             class="card-img-top">
                         <div class="card-body">
                             <h5 class="post-title">포스트 제목</h5>
                             <p class="mycomment">포스트 내용</p>
                             <div calss="fixarea">
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">수정</button>
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">삭제</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">수정</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -215,8 +292,10 @@
                             <h5 class="post-title">포스트 제목</h5>
                             <p class="mycomment">포스트 내용</p>
                             <div calss="fixarea">
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">수정</button>
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">삭제</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">수정</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -229,8 +308,10 @@
                             <h5 class="post-title">포스트 제목</h5>
                             <p class="mycomment">포스트 내용</p>
                             <div calss="fixarea">
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">수정</button>
-                                <button onclick="save_bucket()" type="button" class="btn btn-outline-primary">삭제</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">수정</button>
+                                <button onclick="save_bucket()" type="button"
+                                    class="btn btn-outline-primary">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -238,7 +319,7 @@
             </div>
         </div>
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
+            <ul id="pagination-box" class="pagination justify-content-center">
                 <li class="page-item">
                     <a class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -254,6 +335,5 @@
                 </li>
             </ul>
         </nav>
+
 </html>
-
-
