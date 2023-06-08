@@ -109,11 +109,15 @@
               alert("중복된 아이디입니다.");
               return false;
               $("#id").empty();
-            } else if (id.trim()!="") {//공백제거
+            } else if (id.trim()=="") {//공백제거
+              alert("사용 불가능한 아이디입니다.");
+              $("#id").focus();
+              return false;
+            } else {
               alert("사용 가능한 아이디입니다.");
               $("#name").focus();
               return true;
-            } 
+            }
           });
       }
 
