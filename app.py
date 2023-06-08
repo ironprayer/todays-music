@@ -255,6 +255,7 @@ def writePost():
     title_receive = request.form["title_give"]
     music_link_receive = request.form["music_link_give"]
     content_receive = request.form["content_give"]
+    id = request.form["id_give"]
     ogtitle = ''
     ogimage = '' 
     ogdesc = ''
@@ -283,7 +284,8 @@ def writePost():
         'content': content_receive,
         'ogtitle': ogtitle,
         'ogimage': ogimage,
-        'ogdesc': ogdesc
+        'ogdesc': ogdesc,
+        'userId': id
     }
 
     db.posts.insert_one(doc)

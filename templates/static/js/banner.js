@@ -5,7 +5,7 @@ $(document).ready(function(){
     
     if(isLoggined){
         let id = getCookie("id")
-        top_right_text = `<a href="/my?id=${id}">내정보</a> / <a style="padding-right:10px" onclick='logout();'>로그아웃</a>`
+        top_right_text = `<a href="/my?id=${id}">내정보</a> / <a style="padding-right:10px" href="#" onclick='logout();'>로그아웃</a>`
     } else {
         top_right_text = '<a href="/join">회원가입</a> / <a style="padding-right:10px" href="/login">로그인</a>'
     }
@@ -38,6 +38,7 @@ var getCookie = function(name) {
 
 var logout = function() {
     deleteCookie("id")
+    alert("로그아웃 되었습니다.")
     window.location.href = window.location.protocol + "//" + window.location.host + "/main"
 }
 

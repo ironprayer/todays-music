@@ -11,3 +11,15 @@
 
     color: white;
 }
+
+a {
+    text-decoration-line: none;
+    color: white;
+    font-weight: bold;
+}
+
+a:hover{
+    text-decoration-line: none;
+    color: white;
+    font-weight: bold;
+}
