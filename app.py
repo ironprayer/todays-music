@@ -4,6 +4,8 @@ import certifi
 import requests
 from bs4 import BeautifulSoup
 import json
+from bson import json_util
+import math
 
 app = Flask(__name__, static_folder="templates/static")
 
@@ -84,7 +86,6 @@ def updateUser():
 def getPost():
     pass
 
-
 # 내가 작성한 글 삭제
 @app.route("/posts", methods=["DELETE"])
 def deleteUser():
@@ -93,7 +94,27 @@ def deleteUser():
 # 지역별 글 목록 조회
 @app.route("/posts/region", methods=["GET"])
 def getPostsWithRegion():
-    pass
+    regionName = request.args.get("regionName", type=str)
+    startIndex = request.args.get("startIndex", type=int)
+    element_size = 3
+    if(regionName == "전체") :
+        result = list(db.posts.find({}).skip(startIndex).limit(element_size))
+    else :
+        result = list(db.posts.find({"region" : regionName}).skip(startIndex).limit(element_size))
+
+    return jsonify({'result': json.loads(json_util.dumps(result))})
+
+# 지역별 글 개수 조회
+@app.route("/posts/region/count", methods=["GET"])
+def getPostPageCountWithRegion():
+    regionName = request.args.get("regionName", type=str)
+    element_size = 3
+    if(regionName == "전체") :
+        result = len(list(db.posts.find({})))
+    else :
+        result = len(list(db.posts.find({"region" : regionName})))
+
+    return jsonify({'count': math.ceil(result/element_size)})    
 
 # 글 상세 조회
 @app.route("/posts/detail", methods=["GET"])
