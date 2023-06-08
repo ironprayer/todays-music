@@ -108,12 +108,15 @@ def login():
 
     if user == None:
         result = 0
+        id = None
     elif user["password"] != password_receive:
         result = 1
+        id = None
     else:
         result = 2
+        id = user["id"]
 
-    return jsonify({"result": result})
+    return jsonify({"result": result, "id": id})
 
 # 내가 작성할 글 조회
 @app.route("/posts", methods=["GET"])

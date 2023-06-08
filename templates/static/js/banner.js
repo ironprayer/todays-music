@@ -4,9 +4,10 @@ $(document).ready(function(){
     let top_right_text = ''
     
     if(isLoggined){
-        top_right_text = `<a>내정보</a> / <a style="padding-right:10px" onclick='logout();'>로그아웃</a>`
+        let id = getCookie("id")
+        top_right_text = `<a href="/my?id=${id}">내정보</a> / <a style="padding-right:10px" onclick='logout();'>로그아웃</a>`
     } else {
-        top_right_text = '<a>회원가입</a> / <a style="padding-right:10px">로그인</a>'
+        top_right_text = '<a href="/join">회원가입</a> / <a style="padding-right:10px" href="/login">로그인</a>'
     }
 
     let temp_html = `<div class="banner">

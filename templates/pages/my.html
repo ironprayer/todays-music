@@ -146,7 +146,6 @@
 
         //   function save_comment() {
         //     let formData = new FormData();
-
         $(document).ready(function () {
             let id = "test";
             find_user(id)
@@ -205,6 +204,9 @@
                     let content = row['content']
                     let ogimage = row['ogimage']
 
+                    let post_id = row['_id']['$oid']
+
+
                     let temp_html = `<div class="col">
                                     <div class="card h-100">
                                         <img src="${ogimage}"
@@ -213,9 +215,9 @@
                                             <h5 class="post-title">${title}</h5>
                                             <p class="mycomment">${content}</p>
                                             <div calss="fixarea">
-                                                <button onclick="save_bucket()" type="button"
+                                                <button onclick="save_bucket(${post_id})" type="button"
                                                     class="btn btn-outline-primary">수정</button>
-                                                <button onclick="save_bucket()" type="button"
+                                                <button onclick="save_bucket(${post_id})" type="button"
                                                     class="btn btn-outline-primary">삭제</button>
                                             </div>
                                         </div>
