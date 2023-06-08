@@ -112,6 +112,10 @@
             });
         }
 
+        function goHome() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/main"
+        }
+
     </script>
 
 
@@ -120,7 +124,7 @@
 
 <body>
     <div class="banner">
-        <h1>Today's music</h1>
+        <h1 onclick="goHome()">Today's Music</h1>
     </div>
 
     <div class="mybox">
