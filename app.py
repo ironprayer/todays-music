@@ -61,9 +61,18 @@ def join():
 
     doc = {"id": id_receive, "name": name_receive, "password": password_receive}
 
-    # db.user.insert_one(doc)
+    db.user.insert_one(doc)
 
     return jsonify({"msg": "가입 성공!"})
+
+
+# 회원가입 아이디 중복 체크 조회
+@app.route("/user/idcheck", methods=["POST"])
+def idcheck():
+    id_receive = request.form["id_give"]
+    user = db.users.find_one({"id": id_receive})
+
+    return jsonify({"result": user})
 
 
 # 유저 정보 조회
@@ -71,7 +80,7 @@ def join():
 def getUser():
     ns = request.args.get("id", type=str)  # 파라미터 받는 부분
 
-    all_comments = list(db.fan.find({}, {"_id": False}))
+    all_comments = list(db.user.find({}, {"_id": False}))
 
     return jsonify({"result": all_comments})
 

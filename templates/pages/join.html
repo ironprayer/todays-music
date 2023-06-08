@@ -71,58 +71,111 @@
 
       input {
         width: 100%;
+        height:100%;
         padding: 10px;
+        padding-left: 5px;
         box-sizing: border-box;
         border-radius: 5px;
         border: none;
+        font-size:1em;
+        display:inline;
+        outline:none;
       }
+
+      input[type=button]{
+      width: 30%;
+      height:100%;
+      border:none;
+      font-size:1em;
+      outline:none;
+      display:inline;
+      margin-left: -10px;
+      box-sizing: border-box;
+    }
     </style>
 
     <script>
+      function get_id() {
+        let id = $("#id").val();
+
+        let formData = new FormData();
+        formData.append("id_give", id);
+
+        fetch("/user/idcheck", { method: "POST", body: formData })
+          .then((response) => response.json())
+          .then((data) => {
+            let user = data["result"];
+            if (user == id) {
+              alert("중복된 아이디입니다.");
+              return false;
+              $("#id").empty();
+            } else if (id.trim()!="") {//공백제거
+              alert("사용 가능한 아이디입니다.");
+              $("#name").focus();
+              return true;
+            } 
+          });
+      }
+
       function save_join() {
-        let id = $(".id").val();
-        let name = $(".name").val();
-        let password = $(".password").val();
+        //데이터 유효성 검사 포함
+        let id = document.getElementById("id").value;
+        let name = document.getElementById("name").value;
+        let password = document.getElementById("password").value;
+        let passwordcheck = document.getElementById("passwordcheck").value;
 
         let formData = new FormData();
         formData.append("id_give", id);
         formData.append("name_give", name);
         formData.append("password_give", password);
 
+        if (id.trim() == "" || id.length == 0) {
+          alert("아이디를 입력하세요");
+          $("#id").focus();
+          return false;
+        }
+
+        if (id.length < 5) {
+          alert("아이디를 5글자 이상 입력해주세요.");
+          $("#id").focus();
+          return false;
+        }
+
+        if (name == "") {
+          alert("닉네임을 입력하세요.");
+          $("#name").focus();
+          return false;
+        }
+
+        if (password == "") {
+          alert("비밀번호를 입력하세요");
+          $("#password").focus();
+          return false;
+        }
+        // 영문 숫자 특수기호 8자리 이상
+        let passwordRecheck =
+          /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,}$/;
+
+        if (!passwordRecheck.test(password)) {
+          alert(
+            "비밀번호는 영문자+숫자+특수기호 조합으로 8자리 이상 사용해야 합니다."
+          );
+          $("#password").focus();
+          return false;
+        }
+
+        if (password !== passwordcheck) {
+          alert("비밀번호가 일치하지않습니다.");
+          $("#passwordcheck").focus();
+          return false;
+        }
+
         fetch("/user/join", { method: "POST", body: formData })
           .then((res) => res.json())
           .then((data) => {
             alert(data["msg"]);
+            location.href = "/main";
           });
-      }
-
-      function get_id() {
-        fetch("/user")
-          .then((res) => res.json())
-          .then((data) => {
-            let rows = data["result"];
-            rows.forEach((a) => {
-              let id = a["id"];
-              if (id == $(".id").val()) {
-                alert("중복된 아이디입니다.");
-                return false;
-                $(".id").empty();
-              } else {
-                alert("사용 가능한 아이디입니다.");
-              }
-            });
-          });
-      }
-
-      function validate_password() {
-        let password = document.getElementById("password").value;
-        let passwordcheck = document.getElementById("passwordcheck").value;
-
-        if (password != passwordcheck) {
-          alert("비밀번호가 일치하지 않습니다.");
-          return false;
-        }
-        return true;
       }
     </script>
   </head>
@@ -136,20 +189,25 @@
           </div>
           <div class="join_area">
             <p>
-              <input type="text" placeholder="아이디" id="id" />
-              <button
-                type="button"
-                onclick="return get_id()"
-                class="btn btn-primary"
-              >
-                중복확인
-              </button>
+              <input
+                type="text"
+                placeholder="아이디 5글자 이상"
+                id="id"
+                minlength="5"
+              />
+              <input type="button" class="btn btn-primary" value="중복확인" onclick="get_id();">
+            </input>
             </p>
             <p>
               <input type="text" placeholder="닉네임" id="name" />
             </p>
             <p>
-              <input type="password" placeholder="비밀번호" id="password" />
+              <input
+                type="password"
+                placeholder="비밀번호 영문,숫자,특수기호 조합 8자리 이상"
+                id="password"
+                minlength="8"
+              />
             </p>
             <p>
               <input
@@ -160,7 +218,15 @@
             </p>
             <button
               type="button"
-              onclick="return validate_password()"
+              class="btn btn-secondary"
+              id="login_page_back"
+              onClick="location.href='/login'"
+            >
+              뒤로가기
+            </button>
+            <button
+              type="button"
+              onclick="save_join();"
               class="btn btn-primary"
             >
               가입하기
