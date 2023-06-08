@@ -192,6 +192,16 @@ def getPostComments():
 
     return jsonify({'result': all_comment})
 
+# 댓글 개수 조회
+@app.route("/posts/comment/count", methods=["GET"])
+def getPostCommentscount():
+    post_id = request.args.get("postId", type=str)
+    element_size = 3
+
+    result = len(list(db.comment.find({"postId" : post_id})))
+
+    return jsonify({'count': math.ceil(result/element_size)})
+
 
 # 댓글 작성
 @app.route("/posts/comment", methods=["POST"])

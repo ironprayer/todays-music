@@ -59,6 +59,7 @@
             const post_id = urlParams.get('id')
 
             show_detail(post_id);
+            set_pagenation(post_id);
         });
         function show_detail(post_id) {
             fetch(`/posts/detail?postId=${post_id}`).then((res) => res.json()).then((data) => {
@@ -103,6 +104,7 @@
                 rows.forEach((a, index) => {
                     let comment = a['comment']
                     let star = a['star']
+                    let userId = a['userId']
                     console.log(a)
 
                     let star_image = '⭐'.repeat(star)
@@ -110,6 +112,7 @@
                     let temp_html = ``
                     temp_html = `<tr>
                                     <th scope="row">${index + 1}</th>
+                                    <th>${userId}</th>
                                     <td>${comment}</td>
                                     <td>${star_image}</td>
                                 </tr>`
@@ -145,6 +148,18 @@
                 alert(data["msg"]);
                 window.location.reload()
             });
+        }
+
+        function set_pagenation(post_id) {
+            fetch(`/posts/comment/count?postId=${post_id}`).then((res) => res.json()).then((data) => {
+                let count = data['count']
+                $('#pagenation-box').empty()
+                for (let i = 0; i < count; i++) {
+                    let startIndex = i * 3
+                    let temp_html = `<li class="page-item"><a class="page-link" onclick='show_posts("${post_id}", ${startIndex})' href="#">${i + 1}</a></li>`
+                    $('#pagenation-box').append(temp_html)
+                }
+            })
         }
     </script>
 
@@ -199,26 +214,29 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col" style="width: 10%;">#</th>
+                    <th scope="col" style="width: 5%;">#</th>
+                    <th scope="col" style="width: 15%;">작성자</th>
                     <th scope="col" style="width: 70%;">댓글</th>
-                    <th scope="col" style="width: 20%;">별점</th>
+                    <th scope="col" style="width: 10%;">별점</th>
                 </tr>
             </thead>
             <tbody id="comment-list">
                 <tr>
                     <th scope="row">1</th>
+                    <th>유저ID</th>
                     <td>댓글 내용</td>
                     <td>⭐⭐⭐⭐⭐</td>
                 </tr>
                 <tr>
                     <th scope="row">2</th>
+                    <th>유저ID</th>
                     <td>댓글 내용</td>
                     <td>⭐⭐⭐⭐⭐</td>
                 </tr>
             </tbody>
         </table>
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
+            <ul id="pagenation-box" class="pagination justify-content-center">
                 <li class="page-item">
                     <a class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
