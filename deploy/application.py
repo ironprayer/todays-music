@@ -8,7 +8,7 @@ from bson import json_util
 import math
 from bson import ObjectId
 
-app = Flask(__name__, static_folder="templates/static")
+application = app = Flask(__name__, static_folder="templates/static")
 
 client = MongoClient(
     "mongodb+srv://sparta:test@cluster0.p5xkuy6.mongodb.net/?retryWrites=true&w=majority",
@@ -276,8 +276,6 @@ def writePost():
     music_link_receive = request.form["music_link_give"]
     content_receive = request.form["content_give"]
     id = request.form["id_give"]
-    is_update_post = request.form['is_update_post_give']
-    post_id = request.form['post_id_give']
     ogtitle = ''
     ogimage = '' 
     ogdesc = ''
@@ -297,37 +295,24 @@ def writePost():
         ogimage = soup.select_one('meta[property="og:image"]')['content']
         ogdesc = soup.select_one('meta[property="og:description"]')['content']
 
-    if is_update_post == "false" :
-        doc = {
-            'region' : region_receive,
-            'temp_icon': temp_icon_receive,
-            'temp': temp_receive,
-            'title': title_receive,
-            'music_link': music_link_receive,
-            'content': content_receive,
-            'ogtitle': ogtitle,
-            'ogimage': ogimage,
-            'ogdesc': ogdesc,
-            'userId': id
-        }
+    doc = {
+        'region' : region_receive,
+        'temp_icon': temp_icon_receive,
+        'temp': temp_receive,
+        'title': title_receive,
+        'music_link': music_link_receive,
+        'content': content_receive,
+        'ogtitle': ogtitle,
+        'ogimage': ogimage,
+        'ogdesc': ogdesc,
+        'userId': id
+    }
 
-        db.posts.insert_one(doc)
-    else :
-        db.posts.update_one({"_id":ObjectId(post_id)},{"$set": {
-            'region' : region_receive,
-            'temp_icon': temp_icon_receive,
-            'temp': temp_receive,
-            'title': title_receive,
-            'music_link': music_link_receive,
-            'content': content_receive,
-            'ogtitle': ogtitle,
-            'ogimage': ogimage,
-            'ogdesc': ogdesc,
-        }})
+    db.posts.insert_one(doc)
 
     return jsonify({'msg': '저장 완료'})
     
 
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=5000, debug=True)
+    app.run()

@@ -82,12 +82,18 @@
                 let region = post['region']
                 let content = post['content']
 
-                let region_index_mapping = {'서울':0, '경기':1, '강원':2,'충남':3,
-                '충북':4,'경북':5, '경남':6, '전북':7 ,'전남':8}
-                
+                // 서울
+                // 경기
+                // 강원</option>
+                // <option value="충남">충남</option>
+                // <option value="충북">충북</option>
+                // <option value="경북">경북</option>
+                // <option value="경남">경남</option>
+                // <option value="전북">전북</option>
+                // <option value="전남">전남</option>
 
                 $('select').each(function(idx, sel) {
-                    sel.selectedIndex = region_index_mapping[region];
+                    sel.selectedIndex = 3;
                 });
 
                 console.log($("#region").val())
@@ -121,14 +127,6 @@
             let content = $("#content").val()
             let id = getCookie("id")
 
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const post_id = urlParams.get('postId')
-            
-            let is_update_post = (post_id != null)
-            console.log("post_id : ", post_id)
-            console.log("is_update_post", is_update_post)
-
             formData.append("region_give", region)
             formData.append("temp_icon_give", temp_icon)
             formData.append("temp_give", temp)
@@ -136,16 +134,10 @@
             formData.append("music_link_give", music_link)
             formData.append("content_give", content)
             formData.append("id_give", id)
-            formData.append("is_update_post_give", is_update_post)
-            formData.append("post_id_give", post_id)
 
             fetch('/posts', { method: "POST", body: formData, }).then((res) => res.json()).then((data) => {
                 alert(data["msg"])
-                if(is_update_post){
-                    window.location.href = "/my"
-                } else {
-                    window.location.href =  "/main"
-                }
+                window.location.href = window.location.protocol + "//" + window.location.host + "/main"
             });
         }
 
