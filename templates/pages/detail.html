@@ -60,7 +60,9 @@
 
             show_detail(post_id);
             set_pagenation(post_id);
+            show_comment(post_id, 0)
         });
+
         function show_detail(post_id) {
             fetch(`/posts/detail?postId=${post_id}`).then((res) => res.json()).then((data) => {
                 $('#detail1').empty()
@@ -90,15 +92,17 @@
                                     <p class="card-text" style="display: flex; flex-direction: column;align-items: center;justify-content: center;">${ogtitle}</p>
                                 </div>
                             </div>
-                            <div style="width: 60%;">
+                            <div style="width: 60%;" class="overflow-auto">
                                 <h4>${content}</h4>
                             </div>`
                 $('#detail1').append(temp_html)
                 $('#detail2').append(temp_html2)
                 
             });
+        }
 
-            fetch(`/posts/comment?postId=${post_id}`).then((res) => res.json()).then((data) => {
+        function show_comment(post_id, start_index) {
+            fetch(`/posts/comment?postId=${post_id}&startIndex=${start_index}`).then((res) => res.json()).then((data) => {
                 let rows = data['result']
                 $('#comment-list').empty()
                 rows.forEach((a, index) => {
@@ -111,7 +115,7 @@
 
                     let temp_html = ``
                     temp_html = `<tr>
-                                    <th scope="row">${index + 1}</th>
+                                    <th scope="row">${start_index +index + 1}</th>
                                     <th>${userId}</th>
                                     <td>${comment}</td>
                                     <td>${star_image}</td>
@@ -119,7 +123,6 @@
                     $('#comment-list').append(temp_html)
                 })
             });
-
         }
 
         function save_comment() {
@@ -156,7 +159,7 @@
                 $('#pagenation-box').empty()
                 for (let i = 0; i < count; i++) {
                     let startIndex = i * 3
-                    let temp_html = `<li class="page-item"><a class="page-link" onclick='show_posts("${post_id}", ${startIndex})' href="#">${i + 1}</a></li>`
+                    let temp_html = `<li class="page-item"><a class="page-link" onclick='show_comment("${post_id}", ${startIndex})'>${i + 1}</a></li>`
                     $('#pagenation-box').append(temp_html)
                 }
             })
@@ -187,7 +190,7 @@
                     <p class="card-text">앨범 설명.</p>
                 </div>
             </div>
-            <div style="width: 60%;">
+            <div style="width: 60%;" class="overflow-auto">
                 <h4>내용 출력 부분</h4>
             </div>
         </div>

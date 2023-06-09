@@ -57,12 +57,47 @@
 
     <script>
         $(document).ready(function () {
-            set_temp('서울')
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const post_id = urlParams.get('postId')
+
+            if(post_id == null){
+                set_temp('서울')
+            }else {
+                set_pre_post(post_id)
+            }
 
             $('#region').change(function () {
                 set_temp(this.value)
             })
         });
+
+        function set_pre_post(post_id) {
+            fetch(`/posts/detail?postId=${post_id}`).then((res) => res.json()).then((data) => {
+                let post = data['result']
+                let title = post['title']
+                let music_link = post['music_link']
+                let temp_icon = post['temp_icon']
+                let temp = post['temp']
+                let region = post['region']
+                let content = post['content']
+
+                document.getElementById("region").childNodes.forEach((a)=>{
+                    console.log(a);
+                    // if (a.length < 0) {
+                    //     console.log(a)
+                    // }
+                })
+                
+                $('#temp').val(temp)
+                $('#temp_icon').val(temp_icon)
+                $('#title').val(title)
+                $('#music_link').val(music_link)
+                $('#content').val(content)
+
+                $
+            });
+        }
 
         function set_temp(region) {
             fetch(`/posts/weather?region=${region}`).then((res) => res.json()).then((data) => {

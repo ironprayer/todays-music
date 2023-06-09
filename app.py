@@ -85,17 +85,17 @@ def idcheck():
 @app.route("/user", methods=["GET"])
 def getUser():
     id = request.args.get("id", type=str)
-    user = db.user.find_one({'userId' : id}, {'_id':False})
+    user = db.user.find_one({'id' : id}, {'_id':False})
 
     return jsonify({'user': user})
 
 #유저 정보 수정
 @app.route("/user", methods=["PUT"])
 def updateUser():
-    id = request.form['userId']
+    id = request.form['id']
     new_name = request.form['newusername']
 
-    db.user.update_one({"userId": id}, {"$set":{"userName": new_name}})
+    db.user.update_one({"id": id}, {"$set":{"name": new_name}})
 
     return jsonify({'msg': "유저 이름이 변경되었습니다."})
 
@@ -146,7 +146,11 @@ def getPostPageCount():
 # 내가 작성한 글 삭제
 @app.route("/posts", methods=["DELETE"])
 def deleteUser():
-    pass
+    post_id = request.form['post_id']
+
+    db.posts.delete_one({"_id": ObjectId(post_id)})
+
+    return jsonify({'msg': '삭제 완료'})
 
 
 # 지역별 글 목록 조회
@@ -188,7 +192,10 @@ def getPostDetail():
 @app.route("/posts/comment", methods=["GET"])
 def getPostComments():
     post_id = request.args.get("postId", type=str)
-    all_comment = list(db.comment.find({"postId" : post_id}, {'_id': False}))
+    start_index = request.args.get("startIndex", type=int)
+    element_size = 3
+
+    all_comment = list(db.comment.find({"postId" : post_id}, {'_id': False}).skip(start_index).limit(element_size))
 
     return jsonify({'result': all_comment})
 

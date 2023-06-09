@@ -132,6 +132,12 @@
         .page-item {
             margin-top: 10px;
         }
+
+        .card-img-top {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
     </style>
 
     <script>
@@ -147,31 +153,32 @@
         //   function save_comment() {
         //     let formData = new FormData();
         $(document).ready(function () {
-            fixname(id)
+            let id = getCookie("id")
+            console.log(id)
             find_user(id)
             show_posts(id, 0)
             set_pagination(id)
-            fix_post(oid)
         });
 
         function find_user(id) {
             fetch(`/user?id=${id}`).then(res => res.json()).then(data => {
+                console.log(data)
                 let user = data['user']
-                let userId = user['userId']
-                let userName = user['userName']
+                let userId = user['id']
+                let userName = user['name']
 
                 $('#user_id').val(userId)
                 $('#user_name').val(userName);
             })
         }
 
-                        function fixname(id) {
+        function fixname() {
             let formData = new FormData();
 
             let id = $('#user_id').val()
             let newUserName = $('#user_name').val()
 
-                        formData.append("id", id)
+            formData.append("id", id)
             formData.append("newusername", newUserName)
 
             fetch(`/user?id=${id}`, { method: "PUT", body: formData, }).then(res => res.json()).then(data => {
@@ -198,7 +205,7 @@
         function show_posts(id, startIndex) {
             fetch(`/posts?id=${id}&startIndex=${startIndex}`).then(res => res.json()).then(data => {
                 let rows = data['result']
-                
+
                 $('#cards-box').empty()
                 rows.forEach((row) => {
                     let title = row['title']
@@ -212,13 +219,13 @@
                                         <div class="card h-100">
                                             <img src="${ogimage}"
                                                 class="card-img-top">
-                                            <div class="card-body">
+                                            <div class="card-body d-inline-block text-truncate">
                                                 <h5 class="post-title">${title}</h5>
-                                                <p class="mycomment">${content}</p>
+                                                <div class="d-inline-block text-truncate">${content}</div>
                                                 <div calss="fixarea">
-                                                    <button onclick="fix_post()" type="button"
+                                                    <button onclick='fix_post("${post_id}")' type="button"
                                                         class="btn btn-outline-primary">수정</button>
-                                                    <button onclick="delete_post()" type="button"
+                                                    <button onclick='delete_post("${post_id}")' type="button"
                                                         class="btn btn-outline-primary">삭제</button>
                                                 </div>
                                             </div>
@@ -229,20 +236,23 @@
                 })
             })
         }
-                                function fixpost() {
-                                    let fix_post = window.location.href = "/write"
-                                }
-                                function deletepost() {
-                                    let formData = new FormData();
-                                    let deletebtn = $("#delete_post").val()
+        function fix_post(post_id) {
+            window.location.href = `/write?postId=${post_id}`
+        }
+        function delete_post(post_id) {
+            let formData = new FormData();
 
-                                    formData.append("title_give", title)
-                                    fetch('/posts', { method: "delete", body: formData, }).then((res) => res.json()).then((data) => {
-                                        alert(data["msg"]))
-                                    window.location.href = window.location.protocol + "//" + window.location.host + "/main"
-                                }
+            formData.append("post_id", post_id)
+            fetch('/posts', { method: "DELETE", body: formData, }).then((res) => res.json())
+            .then((data) => {
+                alert(data["msg"])
+                window.location.reload()
+            })
+            
+            
+        }
 
-</script>
+    </script>
 
 
 
@@ -275,8 +285,7 @@
             </div>
             <div class="col">
                 <div class="card h-100">
-                    <img src=""
-                        class="card-img-top">
+                    <img src="" class="card-img-top">
                     <div class="card-body">
                         <h5 class="post-title">포스트 제목</h5>
                         <p class="mycomment">포스트 내용</p>
@@ -289,8 +298,7 @@
             </div>
             <div class="col">
                 <div class="card h-100">
-                    <img src=""
-                        class="card-img-top">
+                    <img src="" class="card-img-top">
                     <div class="card-body">
                         <h5 class="post-title">포스트 제목</h5>
                         <p class="mycomment">포스트 내용</p>
@@ -321,4 +329,5 @@
         </ul>
     </nav>
 </body>
+
 </html>
