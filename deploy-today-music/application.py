@@ -23,7 +23,7 @@ def home():
 
 @app.route("/hc")
 def health():
-    return "ok";
+    return "ok"
 
 # 글 상세 페이지
 @app.route("/detail")
@@ -276,6 +276,8 @@ def writePost():
     music_link_receive = request.form["music_link_give"]
     content_receive = request.form["content_give"]
     id = request.form["id_give"]
+    is_update_post = request.form['is_update_post_give']
+    post_id = request.form['post_id_give']
     ogtitle = ''
     ogimage = '' 
     ogdesc = ''
@@ -295,20 +297,33 @@ def writePost():
         ogimage = soup.select_one('meta[property="og:image"]')['content']
         ogdesc = soup.select_one('meta[property="og:description"]')['content']
 
-    doc = {
-        'region' : region_receive,
-        'temp_icon': temp_icon_receive,
-        'temp': temp_receive,
-        'title': title_receive,
-        'music_link': music_link_receive,
-        'content': content_receive,
-        'ogtitle': ogtitle,
-        'ogimage': ogimage,
-        'ogdesc': ogdesc,
-        'userId': id
-    }
+    if is_update_post == "false" :
+        doc = {
+            'region' : region_receive,
+            'temp_icon': temp_icon_receive,
+            'temp': temp_receive,
+            'title': title_receive,
+            'music_link': music_link_receive,
+            'content': content_receive,
+            'ogtitle': ogtitle,
+            'ogimage': ogimage,
+            'ogdesc': ogdesc,
+            'userId': id
+        }
 
-    db.posts.insert_one(doc)
+        db.posts.insert_one(doc)
+    else :
+        db.posts.update_one({"_id":ObjectId(post_id)},{"$set": {
+            'region' : region_receive,
+            'temp_icon': temp_icon_receive,
+            'temp': temp_receive,
+            'title': title_receive,
+            'music_link': music_link_receive,
+            'content': content_receive,
+            'ogtitle': ogtitle,
+            'ogimage': ogimage,
+            'ogdesc': ogdesc,
+        }})
 
     return jsonify({'msg': '저장 완료'})
     
